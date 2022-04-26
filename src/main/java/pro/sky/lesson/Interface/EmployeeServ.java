@@ -1,4 +1,6 @@
-package pro.sky.lesson;
+package pro.sky.lesson.Interface;
+
+import pro.sky.lesson.Employee;
 
 import java.util.Collection;
 
@@ -6,13 +8,11 @@ import java.util.Collection;
 public interface EmployeeServ {
     Employee add(String firstName, String lastName);
 
-    Employee add(Employee employee);
-
     Employee remove(String firstName, String lastName);
-
-    Employee remove(Employee newEmployee);
 
     Employee find(String firstName, String lasName);
 
     Collection<Employee> findAll();
+
+    String createKey(String firstName, String lastName);
 }

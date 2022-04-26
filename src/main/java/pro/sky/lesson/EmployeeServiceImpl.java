@@ -1,6 +1,9 @@
 package pro.sky.lesson;
 
 import org.springframework.stereotype.Service;
+import pro.sky.lesson.Exception.EmployeeBookOverFlowException;
+import pro.sky.lesson.Exception.EmployeeNotFoundException;
+import pro.sky.lesson.Interface.EmployeeServ;
 
 import java.util.*;
 
@@ -17,31 +20,20 @@ public class EmployeeServiceImpl implements EmployeeServ {
     @Override
     public Employee add(String firstName, String lastName) {
         Employee newEmployee = new Employee(firstName, lastName);
-        if (employees.containsKey(firstName + lastName)) {
+        if (employees.containsKey(createKey(firstName, lastName))) {
             throw new EmployeeBookOverFlowException();
         }
-        employees.put(firstName + lastName, newEmployee);
+        employees.put(createKey(firstName, lastName), newEmployee);
         return newEmployee;
-    }
-
-    @Override
-    public Employee add(Employee employee) {
-        return null;
 
     }
 
     @Override
     public Employee remove(String firstName, String lastName) {
-        if (!employees.containsKey(firstName + lastName)) {
+        if (!employees.containsKey(createKey(firstName, lastName))) {
             throw new EmployeeNotFoundException();
         }
-        return employees.remove(firstName + lastName);
-    }
-
-    @Override
-    public Employee remove(Employee employee) {
-        return null;
-
+        return employees.remove(createKey(firstName, lastName));
     }
 
     @Override
@@ -49,12 +41,18 @@ public class EmployeeServiceImpl implements EmployeeServ {
         if (!employees.containsKey(firstName + lastName)) {
             throw new EmployeeNotFoundException();
         }
-        return employees.get(firstName + lastName);
+        return employees.get(createKey(firstName, lastName));
 
     }
 
     @Override
     public Collection<Employee> findAll() {
-        return Collections.unmodifiableCollection(employees.values());
+        return employees.values();
+    }
+
+    @Override
+    public String createKey(String firstName, String lastName) {
+        return firstName + lastName;
+
     }
 }
